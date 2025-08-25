@@ -42,9 +42,16 @@ export default function Header() {
             <p className="text-white font-semibold">{currentTime}</p>
             <p className="text-purple-300 text-sm">Heure locale</p>
           </div>
-          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-            <span className="text-white font-bold">A</span>
-          </div>
+          <button
+            onClick={() => {
+              localStorage.removeItem('foreas_auth');
+              window.location.href = '/login';
+            }}
+            className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform duration-300"
+            title="Déconnexion"
+          >
+            <span className="text-white font-bold">🚪</span>
+          </button>
         </div>
       </div>
     </header>
