@@ -1,9 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 
 export default function PartnersDashboard() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  
   const [partnerData] = useState({
     activeDrivers: 42,
     monthlyCommission: 420, // 42 * 10€
@@ -13,6 +18,35 @@ export default function PartnersDashboard() {
     conversionRate: 34,
     clicksThisWeek: 12
   });
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const authStatus = localStorage.getItem('foreas_auth');
+      if (authStatus === 'true') {
+        setIsAuthenticated(true);
+      } else {
+        router.push('/login');
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-purple-950 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-purple-300">Chargement...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-purple-950 to-black">
