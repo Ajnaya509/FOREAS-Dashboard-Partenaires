@@ -7,12 +7,13 @@ import Header from '@/components/Header';
 export default function PartnersDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [partnerInfo, setPartnerInfo] = useState<any>(null);
   const router = useRouter();
   
-  const [partnerData] = useState({
-    activeDrivers: 42,
-    monthlyCommission: 420, // 42 * 10€
-    projectedAnnual: 5040,
+  const [partnerData, setPartnerData] = useState({
+    activeDrivers: 0,
+    monthlyCommission: 0,
+    projectedAnnual: 0,
     rank: 3,
     totalPartners: 47,
     conversionRate: 34,
@@ -22,8 +23,23 @@ export default function PartnersDashboard() {
   useEffect(() => {
     const checkAuth = () => {
       const authStatus = localStorage.getItem('foreas_auth');
-      if (authStatus === 'true') {
+      const storedPartnerData = localStorage.getItem('partner_data');
+      
+      if (authStatus === 'true' && storedPartnerData) {
         setIsAuthenticated(true);
+        const partner = JSON.parse(storedPartnerData);
+        setPartnerInfo(partner);
+        
+        // Mettre à jour les données avec les vraies infos du partenaire
+        setPartnerData({
+          activeDrivers: partner.drivers || 0,
+          monthlyCommission: (partner.drivers || 0) * 10,
+          projectedAnnual: (partner.drivers || 0) * 10 * 12,
+          rank: partner.drivers > 50 ? 1 : partner.drivers > 30 ? 2 : 3,
+          totalPartners: 47,
+          conversionRate: 34,
+          clicksThisWeek: 12
+        });
       } else {
         router.push('/login');
       }
@@ -62,16 +78,26 @@ export default function PartnersDashboard() {
         {/* Rang et Statut */}
         <div className="glass-card p-6 mb-8 flex justify-between items-center">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Agence Dupont Location</h2>
+            <h2 className="text-2xl font-bold mb-2">{partnerInfo?.name || 'Partenaire FOREAS'}</h2>
             <p className="text-purple-300">Top #{partnerData.rank} sur {partnerData.totalPartners} partenaires</p>
+            <p className="text-purple-400 text-sm">{partnerInfo?.email}</p>
           </div>
           <div className="text-center">
-            <div className="text-5xl mb-2">🥇</div>
-            <p className="text-yellow-400 font-bold">GOLD Partner</p>
-            <div className="w-48 h-2 bg-gray-700 rounded-full mt-2">
-              <div className="w-3/4 h-full bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full" />
+            <div className="text-5xl mb-2">
+              {partnerData.activeDrivers >= 60 ? '💎' : partnerData.activeDrivers >= 30 ? '🥇' : '🥈'}
             </div>
-            <p className="text-xs text-gray-400 mt-1">8 chauffeurs pour PLATINUM</p>
+            <p className="text-yellow-400 font-bold">
+              {partnerData.activeDrivers >= 60 ? 'PLATINUM Partner' : partnerData.activeDrivers >= 30 ? 'GOLD Partner' : 'SILVER Partner'}
+            </p>
+            <div className="w-48 h-2 bg-gray-700 rounded-full mt-2">
+              <div 
+                className="h-full bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full" 
+                style={{width: `${Math.min(100, (partnerData.activeDrivers / 60) * 100)}%`}}
+              />
+            </div>
+            <p className="text-xs text-gray-400 mt-1">
+              {partnerData.activeDrivers >= 60 ? 'Niveau maximum atteint!' : `${60 - partnerData.activeDrivers} chauffeurs pour PLATINUM`}
+            </p>
           </div>
         </div>
 
