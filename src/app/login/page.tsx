@@ -44,6 +44,16 @@ export default function LoginPage() {
             Connexion
           </button>
         </form>
+        
+        <button 
+          onClick={() => {
+            localStorage.setItem('foreas_auth', 'true');
+            window.location.href = '/dashboard';
+          }}
+          className="w-full p-3 bg-green-600 rounded-lg text-white mt-2"
+        >
+          Accès Direct Dashboard (Test)
+        </button>
       </div>
     </div>
   );
