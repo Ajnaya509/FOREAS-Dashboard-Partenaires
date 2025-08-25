@@ -7,21 +7,24 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
     
+    // Authentification factice sans vérification base de données
     setTimeout(() => {
       if (email === 'admin@foreas.com' && password === 'foreas2024') {
         localStorage.setItem('foreas_auth', 'true');
         router.push('/dashboard');
       } else {
-        alert('Email: admin@foreas.com / Mot de passe: foreas2024');
+        setError('Email ou mot de passe incorrect');
       }
       setIsLoading(false);
-    }, 1000);
+    }, 800);
   };
 
   return (
@@ -95,6 +98,13 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <p className="text-red-400 text-sm text-center">{error}</p>
+            </div>
+          )}
 
           {/* Demo Credentials */}
           <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
