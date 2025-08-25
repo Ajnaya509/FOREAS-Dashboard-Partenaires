@@ -12,11 +12,11 @@ export default function LoginPage() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (email === 'admin@foreas.com' && password === 'foreas2024') {
+    if ((email === 'admin@foreas.com' || email === 'admin@foreas2024') && password === 'foreas2024') {
       localStorage.setItem('foreas_auth', 'true');
       router.push('/dashboard');
     } else {
-      setError('Identifiants incorrects');
+      setError('Aucun compte partenaire trouvé');
     }
   };
 
