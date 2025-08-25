@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 interface ChartData {
   time: string;
@@ -10,7 +10,7 @@ interface ChartData {
 export default function RevenueChart() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [data, setData] = useState<ChartData[]>([]);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isAnimating] = useState(false);
 
   useEffect(() => {
     // Initialiser avec des données de démonstration
@@ -26,27 +26,7 @@ export default function RevenueChart() {
     setData(initialData);
   }, []);
 
-  useEffect(() => {
-    if (!data.length) return;
-    drawChart();
-    
-    // Mettre à jour les données toutes les 5 secondes
-    const interval = setInterval(() => {
-      setData(prev => {
-        const newData = [...prev.slice(1)];
-        const now = new Date();
-        newData.push({
-          time: now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
-          revenue: Math.floor(Math.random() * 500) + 100
-        });
-        return newData;
-      });
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [data]);
-
-  const drawChart = () => {
+  const drawChart = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -156,7 +136,27 @@ export default function RevenueChart() {
       const value = maxRevenue - (i * range) / 5;
       ctx.fillText(`€${Math.round(value)}`, padding - 10, y + 4);
     }
-  };
+  }, [data]);
+
+  useEffect(() => {
+    if (!data.length) return;
+    drawChart();
+    
+    // Mettre à jour les données toutes les 5 secondes
+    const interval = setInterval(() => {
+      setData(prev => {
+        const newData = [...prev.slice(1)];
+        const now = new Date();
+        newData.push({
+          time: now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+          revenue: Math.floor(Math.random() * 500) + 100
+        });
+        return newData;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [data, drawChart]);
 
   const currentRevenue = data.length > 0 ? data[data.length - 1].revenue : 0;
   const previousRevenue = data.length > 1 ? data[data.length - 2].revenue : currentRevenue;

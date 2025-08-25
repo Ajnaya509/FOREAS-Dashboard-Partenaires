@@ -42,7 +42,6 @@ export default function StatsGrid() {
     }
   ]);
 
-  const [animatedValues, setAnimatedValues] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -119,7 +119,7 @@ export default function PartnersDashboard() {
               <p className="text-sm text-gray-400">Vos chauffeurs sur FOREAS</p>
             </div>
             <div className="bg-blue-500/10 border border-blue-500/30 p-4 rounded-lg">
-              <p className="text-blue-400 font-bold">Temps d'Attente</p>
+              <p className="text-blue-400 font-bold">Temps d&apos;Attente</p>
               <p className="text-2xl font-bold">3 min</p>
               <p className="text-sm text-gray-400">vs 12 min Uber</p>
             </div>
@@ -161,7 +161,7 @@ export default function PartnersDashboard() {
           <h3 className="text-xl font-bold mb-4">🔥 Activité Live de Vos Chauffeurs</h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center p-3 bg-green-500/10 rounded-lg">
-              <span>🎉 Jean D. vient de faire €180 aujourd'hui!</span>
+              <span>🎉 Jean D. vient de faire €180 aujourd&apos;hui!</span>
               <span className="text-green-400">il y a 2 min</span>
             </div>
             <div className="flex justify-between items-center p-3 bg-blue-500/10 rounded-lg">
