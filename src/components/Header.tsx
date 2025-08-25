@@ -1,59 +1,18 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-
 export default function Header() {
-  const [currentTime, setCurrentTime] = useState('');
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setCurrentTime(now.toLocaleTimeString('fr-FR', {
-        hour: '2-digit',
-        minute: '2-digit'
-      }));
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <header className="relative mb-8">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="relative">
-            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center animate-pulse-glow">
-              <span className="text-2xl font-bold text-white">F</span>
-            </div>
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-bounce"></div>
-          </div>
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent">
-              FOREAS
-            </h1>
-            <p className="text-purple-300 text-sm">Dashboard Premium</p>
-          </div>
-        </div>
-        
-        <div className="flex items-center space-x-6">
-          <div className="text-right">
-            <p className="text-white font-semibold">{currentTime}</p>
-            <p className="text-purple-300 text-sm">Heure locale</p>
-          </div>
-          <button
-            onClick={() => {
-              localStorage.removeItem('foreas_auth');
-              window.location.href = '/login';
-            }}
-            className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform duration-300"
-            title="Déconnexion"
-          >
-            <span className="text-white font-bold">🚪</span>
-          </button>
-        </div>
-      </div>
+    <header className="glass-card p-6 mb-8 flex justify-between items-center">
+      <h1 className="text-3xl font-black bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+        FOREAS Partners
+      </h1>
+      <button 
+        onClick={() => {
+          localStorage.removeItem('foreas_auth');
+          window.location.href = '/login';
+        }}
+        className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30"
+      >
+        Déconnexion
+      </button>
     </header>
   );
 }
